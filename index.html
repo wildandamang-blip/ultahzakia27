@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Untuk Zakia, dengan Cinta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF4ED;
+    --ivory:#FFFBF7;
+    --rose:#E8B4B8;
+    --rose-deep:#D89498;
+    --mauve:#5C4A4F;
+    --gold:#C9A66B;
+    --gold-soft:#E3CFA8;
+    --line:rgba(92,74,79,0.15);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{
+    background:var(--cream);
+    color:var(--mauve);
+    font-family:'Jost',sans-serif;
+    overflow-x:hidden;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .display{font-family:'Cormorant Garamond',serif;}
+
+  #app{
+    max-width:480px;
+    margin:0 auto;
+    min-height:100vh;
+    position:relative;
+  }
+
+  .page{
+    display:none;
+    min-height:100vh;
+    padding:48px 28px 60px;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    position:relative;
+    animation:fadeIn .7s ease forwards;
+  }
+  .page.active{display:flex;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  .deco-line{
+    width:42px;height:1px;
+    background:var(--gold);
+    margin:18px auto;
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--rose-deep);
+    font-weight:500;
+  }
+  h1.display{font-size:38px;font-weight:600;line-height:1.15;margin:10px 0;}
+  h2.display{font-size:30px;font-weight:600;line-height:1.2;margin:8px 0;}
+  p.body{font-size:15.5px;line-height:1.75;color:var(--mauve);opacity:0.88;max-width:340px;}
+
+  .btn{
+    margin-top:30px;
+    padding:14px 34px;
+    border:1px solid var(--gold);
+    background:transparent;
+    color:var(--mauve);
+    font-family:'Jost',sans-serif;
+    font-size:14px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    border-radius:30px;
+    cursor:pointer;
+    transition:all .35s ease;
+  }
+  .btn:hover{background:var(--gold);color:var(--ivory);}
+  .btn-fill{
+    background:var(--rose);
+    border-color:var(--rose);
+    color:var(--ivory);
+  }
+  .btn-fill:hover{background:var(--rose-deep);border-color:var(--rose-deep);}
+  .btn-ghost{
+    border:none;
+    color:var(--rose-deep);
+    text-decoration:underline;
+    text-transform:none;
+    font-size:13px;
+    background:none;
+    margin-top:14px;
+  }
+
+  /* ---------- COVER ---------- */
+  #page-cover .deco-flower{
+    font-size:30px;
+    color:var(--rose);
+    margin-bottom:6px;
+  }
+  .cover-photo-wrap{
+    width:128px;height:128px;
+    border-radius:50%;
+    padding:5px;
+    background:linear-gradient(135deg,var(--gold-soft),var(--rose));
+    margin-bottom:18px;
+    box-shadow:0 8px 24px rgba(92,74,79,0.18);
+  }
+  .cover-photo-wrap img{
+    width:100%;height:100%;
+    object-fit:cover;
+    border-radius:50%;
+    border:3px solid var(--ivory);
+    display:block;
+  }
+
+  /* ---------- PASSWORD GATE ---------- */
+  .lock-icon{
+    width:54px;height:54px;
+    border:1px solid var(--gold);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:18px;
+    font-size:22px;
+    color:var(--gold);
+  }
+  .date-inputs{
+    display:flex;
+    gap:10px;
+    margin:26px 0 6px;
+  }
+  .date-group{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .date-group label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--rose-deep);}
+  .date-box{
+    display:flex;gap:5px;
+  }
+  .digit{
+    width:34px;height:46px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:var(--ivory);
+    text-align:center;
+    font-family:'Cormorant Garamond',serif;
+    font-size:22px;
+    color:var(--mauve);
+    outline:none;
+    transition:border-color .2s ease;
+  }
+  .digit:focus{border-color:var(--rose);}
+  .sep{align-self:center;color:var(--line);font-size:20px;margin-top:18px;}
+  .error-msg{
+    color:var(--rose-deep);
+    font-size:13px;
+    height:18px;
+    margin-top:14px;
+    opacity:0;
+    transition:opacity .25s ease;
+  }
+  .error-msg.show{opacity:1;}
+  .hint{font-size:12px;color:var(--mauve);opacity:.55;margin-top:22px;}
+
+  .ribbon-overlay{
+    position:fixed;inset:0;
+    background:var(--cream);
+    z-index:50;
+    display:none;
+    align-items:center;justify-content:center;
+  }
+  .ribbon-overlay.show{display:flex;}
+  .ribbon-overlay span{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:22px;
+    color:var(--mauve);
+    animation:pulseText 1.6s ease forwards;
+  }
+  @keyframes pulseText{
+    0%{opacity:0;letter-spacing:0.3em;}
+    40%{opacity:1;letter-spacing:0.05em;}
+    100%{opacity:0;}
+  }
+
+  /* ---------- NUMBER 27 ---------- */
+  .big-27{
+    font-family:'Cormorant Garamond',serif;
+    font-size:120px;
+    line-height:1;
+    color:var(--rose);
+    font-weight:600;
+    position:relative;
+  }
+
+  /* ---------- REASONS ---------- */
+  .reason-card{
+    background:var(--ivory);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:30px 24px;
+    width:100%;
+    max-width:330px;
+  }
+  .reason-num{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    color:var(--gold);
+    font-size:15px;
+    margin-bottom:10px;
+    display:block;
+  }
+  .reason-text{
+    font-family:'Cormorant Garamond',serif;
+    font-size:21px;
+    line-height:1.5;
+    color:var(--mauve);
+  }
+  .progress-dots{
+    display:flex;gap:7px;margin-top:26px;
+  }
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--line);}
+  .dot.on{background:var(--rose);}
+
+  /* ---------- CHOICE HUB ---------- */
+  .choice-grid{
+    display:flex;flex-direction:column;
+    gap:14px;width:100%;max-width:320px;margin-top:24px;
+  }
+  .choice-card{
+    background:var(--ivory);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:18px 20px;
+    display:flex;align-items:center;gap:14px;
+    text-align:left;
+    cursor:pointer;
+    transition:transform .25s ease, border-color .25s ease;
+  }
+  .choice-card:hover{border-color:var(--rose);transform:translateY(-2px);}
+  .choice-emoji{font-size:24px;}
+  .choice-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;}
+  .choice-sub{font-size:11.5px;color:var(--mauve);opacity:.6;margin-top:2px;}
+  .choice-card.visited{opacity:.45;}
+  .choice-check{margin-left:auto;color:var(--rose);font-size:13px;display:none;}
+  .choice-card.visited .choice-check{display:inline;}
+
+  /* ---------- GALLERY ---------- */
+  .gallery-scroll{
+    display:flex;gap:14px;overflow-x:auto;
+    width:100%;padding:10px 4px 16px;
+    scroll-snap-type:x mandatory;
+  }
+  .gallery-scroll::-webkit-scrollbar{display:none;}
+  .photo-card{
+    flex:0 0 220px;
+    scroll-snap-align:center;
+    background:var(--ivory);
+    border-radius:16px;
+    overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .photo-placeholder{
+    width:100%;height:260px;
+    background:linear-gradient(135deg,var(--gold-soft),var(--rose));
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ivory);
+    font-size:13px;
+    text-align:center;
+    padding:16px;
+  }
+  .photo-caption{
+    padding:12px 14px;
+    font-size:12.5px;
+    color:var(--mauve);
+    opacity:.75;
+    text-align:left;
+  }
+
+  /* ---------- VIDEO ---------- */
+  .video-frame{
+    width:100%;
+    aspect-ratio:9/16;
+    max-height:420px;
+    background:var(--mauve);
+    border-radius:18px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    color:var(--cream);
+    gap:10px;
+    position:relative;
+    overflow:hidden;
+  }
+  .video-placeholder-icon{font-size:34px;}
+  video{width:100%;height:100%;object-fit:cover;border-radius:18px;display:none;}
+
+  /* ---------- LETTER ---------- */
+  .envelope{
+    width:140px;height:96px;
+    background:var(--rose);
+    border-radius:6px;
+    position:relative;
+    cursor:pointer;
+    margin-bottom:8px;
+  }
+  .envelope::before{
+    content:'';
+    position:absolute;
+    top:0;left:0;right:0;
+    height:0;
+    border-left:70px solid transparent;
+    border-right:70px solid transparent;
+    border-top:48px solid var(--rose-deep);
+  }
+  .envelope::after{
+    content:'♡';
+    position:absolute;
+    bottom:18px;left:50%;
+    transform:translateX(-50%);
+    color:var(--ivory);
+    font-size:16px;
+  }
+  .letter-text{
+    font-family:'Cormorant Garamond',serif;
+    font-size:18px;
+    line-height:1.85;
+    text-align:left;
+    font-style:italic;
+    color:var(--mauve);
+    max-width:340px;
+  }
+  .letter-text strong{font-style:normal;font-weight:600;}
+
+  /* ---------- VOUCHER ---------- */
+  .voucher{
+    background:var(--ivory);
+    border:1.5px dashed var(--rose);
+    border-radius:14px;
+    padding:20px;
+    width:100%;max-width:320px;
+    margin-bottom:14px;
+    text-align:left;
+    position:relative;
+  }
+  .voucher-tag{
+    font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--rose-deep);
+  }
+  .voucher-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;margin-top:4px;}
+  .voucher-code{
+    margin-top:10px;
+    font-size:11px;
+    color:var(--mauve);opacity:.5;
+    letter-spacing:.08em;
+  }
+
+  /* ---------- FINAL ---------- */
+  .heart-row{font-size:20px;color:var(--rose);letter-spacing:6px;margin:18px 0;}
+
+  nav.bottom-nav{
+    display:flex;justify-content:space-between;
+    width:100%;max-width:340px;
+    margin-top:auto;
+    padding-top:30px;
+  }
+  nav.bottom-nav button{background:none;border:none;color:var(--mauve);opacity:.55;font-size:13px;cursor:pointer;font-family:'Jost',sans-serif;}
+  nav.bottom-nav button.primary{opacity:1;color:var(--rose-deep);font-weight:500;}
+
+  .skip-link{
+    position:absolute;top:18px;right:22px;
+    font-size:11px;color:var(--mauve);opacity:.4;
+    background:none;border:none;cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ================= 1. COVER ================= -->
+  <section class="page active" id="page-cover">
+    <div class="cover-photo-wrap">
+      <img src="assets/cover-baby.jpg" alt="Foto Zakia kecil">
+    </div>
+    <div class="deco-flower">❀</div>
+    <span class="eyebrow">sebuah persembahan kecil</span>
+    <h1 class="display">Untuk Zakia<br>Maulia Syaima</h1>
+    <div class="deco-line"></div>
+    <p class="body">Ada sesuatu yang sudah aku siapkan untukmu.<br>Tapi sebelum itu, aku perlu memastikan&nbsp;ini benar&#8209;benar kamu.</p>
+    <button class="btn btn-fill" onclick="goTo('lock')">Buka Pelan&#8209;Pelan</button>
+  </section>
+
+  <!-- ================= 2. PASSWORD GATE ================= -->
+  <section class="page" id="page-lock">
+    <div class="lock-icon">🔒</div>
+    <span class="eyebrow">kunci kenangan</span>
+    <h2 class="display">Tanggal Spesialmu</h2>
+    <p class="body">Hanya satu tanggal di dunia ini yang bisa membuka halaman selanjutnya.</p>
+
+    <div class="date-inputs" id="dateInputs">
+      <div class="date-group">
+        <label>Tgl</label>
+        <div class="date-box">
+          <input maxlength="1" inputmode="numeric" class="digit" data-i="0">
+          <input maxlength="1" inputmode="numeric" class="digit" data-i="1">
+        </div>
+      </div>
+      <span class="sep">/</span>
+      <div class="date-group">
+        <label>Bln</label>
+        <div class="date-box">
+          <input maxlength="1" inputmode="numeric" class="digit" data-i="2">
+          <input maxlength="1" inputmode="numeric" class="digit" data-i="3">
+        </div>
+      </div>
+      <span class="sep">/</span>
+      <div class="date-group">
+        <label>Thn</label>
+        <div class="date-box">
+          <input maxlength="1" inputmode="numeric" class="digit" data-i="4">
+          <input maxlength="1" inputmode="numeric" class="digit" data-i="5">
+          <input maxlength="1" inputmode="numeric" class="digit" data-i="6">
+          <input maxlength="1" inputmode="numeric" class="digit" data-i="7">
+        </div>
+      </div>
+    </div>
+
+    <div class="error-msg" id="errMsg">Coba lagi, ingat-ingat baik baik ✶</div>
+    <button class="btn btn-fill" onclick="checkPassword()">Buka Kunci</button>
+    <p class="hint">format: DDMMYYYY</p>
+  </section>
+
+  <!-- ribbon transition overlay -->
+  <div class="ribbon-overlay" id="ribbonOverlay"><span>untukmu, terbukalah...</span></div>
+
+  <!-- ================= 3. NUMBER 27 ================= -->
+  <section class="page" id="page-number">
+    <span class="eyebrow">hari ini, kamu</span>
+    <div class="big-27">27</div>
+    <div class="deco-line"></div>
+    <h2 class="display">27 Alasan Aku<br>Menyayangimu</h2>
+    <p class="body">Bukan daftar biasa. Ini kumpulan kecil dari semua hal tentang dirimu yang membuatku jatuh cinta, berkali-kali, di hari yang berbeda-beda.</p>
+    <button class="btn btn-fill" onclick="goTo('reasons'); initReasons();">Mulai Membaca</button>
+  </section>
+
+  <!-- ================= 4. REASONS (carousel) ================= -->
+  <section class="page" id="page-reasons">
+    <span class="eyebrow" id="reasonGroupLabel">tentang dirimu</span>
+    <div class="reason-card">
+      <span class="reason-num" id="reasonNum">Alasan 01</span>
+      <p class="reason-text" id="reasonText">Karena caramu tertawa bisa membuat hari terburukku terasa baik-baik saja.</p>
+    </div>
+    <div class="progress-dots" id="progressDots"></div>
+    <button class="btn btn-fill" id="reasonNextBtn" onclick="nextReason()" style="margin-top:24px;">Alasan Selanjutnya →</button>
+    <button class="btn-ghost" onclick="goTo('hub')">lewati ke menu utama</button>
+  </section>
+
+  <!-- ================= 5. CHOICE HUB ================= -->
+  <section class="page" id="page-hub">
+    <span class="eyebrow">jelajahi sesukamu</span>
+    <h2 class="display">Pilih Petualanganmu</h2>
+    <p class="body" style="margin-bottom:4px;">Buka satu-satu, atau sekaligus. Tidak ada urutan yang salah.</p>
+
+    <div class="choice-grid">
+      <div class="choice-card" data-target="gallery" onclick="visitChoice(this,'gallery')">
+        <div class="choice-emoji">📷</div>
+        <div>
+          <div class="choice-title">Galeri Kita</div>
+          <div class="choice-sub">potret perjalanan kita berdua</div>
+        </div>
+        <div class="choice-check">✓</div>
+      </div>
+      <div class="choice-card" data-target="video" onclick="visitChoice(this,'video')">
+        <div class="choice-emoji">🎬</div>
+        <div>
+          <div class="choice-title">Video Ucapan</div>
+          <div class="choice-sub">sebuah pesan singkat, dariku</div>
+        </div>
+        <div class="choice-check">✓</div>
+      </div>
+      <div class="choice-card" data-target="letter" onclick="visitChoice(this,'letter')">
+        <div class="choice-emoji">✉️</div>
+        <div>
+          <div class="choice-title">Surat Untukmu</div>
+          <div class="choice-sub">hal-hal yang ingin aku tulis</div>
+        </div>
+        <div class="choice-check">✓</div>
+      </div>
+      <div class="choice-card" data-target="voucher" onclick="visitChoice(this,'voucher')">
+        <div class="choice-emoji">🎁</div>
+        <div>
+          <div class="choice-title">Kado Kecil</div>
+          <div class="choice-sub">beberapa "voucher" dariku</div>
+        </div>
+        <div class="choice-check">✓</div>
+      </div>
+    </div>
+
+    <button class="btn" id="hubFinishBtn" onclick="goTo('final')" style="margin-top:28px;">Lanjut ke Penutup →</button>
+  </section>
+
+  <!-- ================= 5a. GALLERY ================= -->
+  <section class="page" id="page-gallery">
+    <button class="skip-link" onclick="goTo('hub')">← menu</button>
+    <span class="eyebrow">galeri kita</span>
+    <h2 class="display">Perjalanan Kita</h2>
+    <div class="gallery-scroll">
+      <div class="photo-card">
+        <div class="photo-placeholder">[ganti dengan foto 1]<br>misal: pertama kali bertemu</div>
+        <div class="photo-caption">Awal dari segalanya.</div>
+      </div>
+      <div class="photo-card">
+        <div class="photo-placeholder">[ganti dengan foto 2]<br>misal: jalan-jalan favorit</div>
+        <div class="photo-caption">Hari yang tidak pernah aku lupa.</div>
+      </div>
+      <div class="photo-card">
+        <div class="photo-placeholder">[ganti dengan foto 3]<br>misal: momen lucu kalian</div>
+        <div class="photo-caption">Kamu paling cantik saat tertawa lepas seperti ini.</div>
+      </div>
+      <div class="photo-card">
+        <div class="photo-placeholder">[ganti dengan foto 4]<br>misal: foto terbaru kalian</div>
+        <div class="photo-caption">Dan sampai detik ini, masih sama jatuh cintanya.</div>
+      </div>
+    </div>
+    <p class="hint">→ geser untuk lihat lainnya</p>
+    <button class="btn btn-fill" onclick="goTo('hub')">Kembali ke Menu</button>
+  </section>
+
+  <!-- ================= 5b. VIDEO ================= -->
+  <section class="page" id="page-video">
+    <button class="skip-link" onclick="goTo('hub')">← menu</button>
+    <span class="eyebrow">video ucapan</span>
+    <h2 class="display">Dengarkan Aku<br>Sebentar</h2>
+    <div class="video-frame" id="videoFrame">
+      <div class="video-placeholder-icon">▶</div>
+      <p style="font-size:13px;opacity:.8;max-width:240px;text-align:center;">[ganti dengan video ucapanmu di sini]</p>
+      <video id="mainVideo" controls playsinline>
+        <source src="assets/video-ucapan.mp4" type="video/mp4">
+      </video>
+    </div>
+    <button class="btn btn-fill" onclick="goTo('hub')" style="margin-top:24px;">Kembali ke Menu</button>
+  </section>
+
+  <!-- ================= 5c. LETTER ================= -->
+  <section class="page" id="page-letter">
+    <button class="skip-link" onclick="goTo('hub')">← menu</button>
+    <span class="eyebrow">surat untukmu</span>
+    <div class="envelope" id="envelope" onclick="openLetter()"></div>
+    <p class="body" id="envelopeHint">ketuk sampul untuk membuka suratnya</p>
+
+    <div id="letterContent" style="display:none;width:100%;">
+      <p class="letter-text">
+        Selamat ulang tahun, <strong>Zakia</strong>.<br><br>
+        Di usiamu yang ke-27, aku cuma mau bilang — terima kasih untuk semua hal kecil yang kamu lakukan tanpa kamu sadari, yang ternyata artinya besar buatku.<br><br>
+        [tulis pesan pribadimu di sini — boleh tentang kenangan favorit, harapan untuk tahun ini, atau apapun yang ingin kamu sampaikan]<br><br>
+        Semoga tahun ini membawa semua hal baik yang kamu pantas dapatkan. Aku akan selalu ada, di setiap versi harimu.<br><br>
+        Dengan sayang,<br>aku.
+      </p>
+      <button class="btn btn-fill" onclick="goTo('hub')" style="margin-top:22px;">Kembali ke Menu</button>
+    </div>
+  </section>
+
+  <!-- ================= 5d. VOUCHER ================= -->
+  <section class="page" id="page-voucher">
+    <button class="skip-link" onclick="goTo('hub')">← menu</button>
+    <span class="eyebrow">kado kecil</span>
+    <h2 class="display">Beberapa Voucher<br>Dariku</h2>
+
+    <div class="voucher">
+      <div class="voucher-tag">voucher 01</div>
+      <div class="voucher-title">1x Pelukan Tanpa Alasan</div>
+      <div class="voucher-code">berlaku kapan saja kamu butuh</div>
+    </div>
+    <div class="voucher">
+      <div class="voucher-tag">voucher 02</div>
+      <div class="voucher-title">1x Nonton Film Pilihanmu</div>
+      <div class="voucher-code">aku ikut nonton apapun yang kamu pilih</div>
+    </div>
+    <div class="voucher">
+      <div class="voucher-tag">voucher 03</div>
+      <div class="voucher-title">1x Bebas Pilih Tempat Makan</div>
+      <div class="voucher-code">[ganti sesuai yang kamu mau kasih]</div>
+    </div>
+
+    <button class="btn btn-fill" onclick="goTo('hub')" style="margin-top:10px;">Kembali ke Menu</button>
+  </section>
+
+  <!-- ================= 6. FINAL ================= -->
+  <section class="page" id="page-final">
+    <div class="heart-row">♡ ♡ ♡</div>
+    <span class="eyebrow">selamat ulang tahun</span>
+    <h1 class="display">27 Tahun<br>Zakia Maulia Syaima</h1>
+    <div class="deco-line"></div>
+    <p class="body">Terima kasih sudah membuka semuanya sampai sini. Ini baru sebagian kecil dari rasa sayangku — sisanya akan aku tunjukkan setiap hari, langsung di dunia nyata.</p>
+    <p class="body" style="margin-top:18px;font-style:italic;">[opsional: tambahkan di sini ajakan seperti "buka WhatsApp, ada sesuatu menantimu" atau ajakan ketemuan]</p>
+  </section>
+
+</div>
+
+<script>
+  const CORRECT = "26061999";
+
+  function goTo(name){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    const target = document.getElementById('page-'+name);
+    target.classList.add('active');
+    window.scrollTo(0,0);
+  }
+
+  /* ---------- password gate logic ---------- */
+  const digitInputs = Array.from(document.querySelectorAll('.digit'));
+  digitInputs.forEach((inp,idx)=>{
+    inp.addEventListener('input', (e)=>{
+      e.target.value = e.target.value.replace(/[^0-9]/g,'').slice(0,1);
+      if(e.target.value && idx < digitInputs.length-1){
+        digitInputs[idx+1].focus();
+      }
+    });
+    inp.addEventListener('keydown', (e)=>{
+      if(e.key === 'Backspace' && !e.target.value && idx>0){
+        digitInputs[idx-1].focus();
+      }
+      if(e.key === 'Enter'){ checkPassword(); }
+    });
+  });
+
+  function checkPassword(){
+    const entered = digitInputs.map(i=>i.value).join('');
+    const errEl = document.getElementById('errMsg');
+    if(entered.length < 8){
+      errEl.textContent = "Lengkapi dulu semua kotaknya ✶";
+      errEl.classList.add('show');
+      return;
+    }
+    if(entered === CORRECT){
+      errEl.classList.remove('show');
+      const overlay = document.getElementById('ribbonOverlay');
+      overlay.classList.add('show');
+      setTimeout(()=>{
+        overlay.classList.remove('show');
+        goTo('number');
+      }, 1400);
+    } else {
+      errEl.textContent = "Coba lagi, ingat-ingat baik-baik ✶";
+      errEl.classList.add('show');
+      digitInputs.forEach(i=>i.value='');
+      digitInputs[0].focus();
+    }
+  }
+
+  /* ---------- reasons carousel ---------- */
+  const reasons = [
+    {group:"tentang dirimu", text:"Karena caramu tertawa bisa membuat hari terburukku terasa baik-baik saja."},
+    {group:"tentang dirimu", text:"Karena kamu selalu dengar cerita yang sama, dan tetap pura-pura belum pernah dengar."},
+    {group:"tentang dirimu", text:"Karena kamu jujur, bahkan saat kejujuran itu tidak mudah disampaikan."},
+    {group:"tentang dirimu", text:"Karena caramu peduli pada orang lain mengingatkanku untuk jadi lebih baik."},
+    {group:"tentang dirimu", text:"Karena kamu tetap lembut walau dunia tidak selalu lembut padamu."},
+    {group:"momen kita", text:"Karena obrolan paling random denganmu selalu jadi favoritku."},
+    {group:"momen kita", text:"Karena diam bersamamu pun terasa cukup, tidak perlu selalu bicara."},
+    {group:"momen kita", text:"Karena setiap rencana kecil bersamamu selalu jadi kenangan besar."},
+    {group:"momen kita", text:"Karena kamu sabar menghadapi semua hal kecil yang merepotkan dariku."},
+    {group:"momen kita", text:"Karena kita bisa berubah pikiran soal makan malam lima kali, dan itu tetap menyenangkan."},
+    {group:"yang aku kagumi", text:"Karena caramu memperjuangkan sesuatu yang kamu yakini, tanpa ragu."},
+    {group:"yang aku kagumi", text:"Karena kamu tumbuh dari hal-hal sulit dan tetap memilih jadi orang baik."},
+    {group:"yang aku kagumi", text:"Karena kamu punya cara sendiri untuk menyemangati orang di sekitarmu."},
+    {group:"yang aku kagumi", text:"Karena kamu tidak pernah berhenti belajar jadi versi terbaik dirimu."},
+    {group:"yang aku kagumi", text:"Karena kamu tetap rendah hati meski banyak yang bisa kamu sombongkan."},
+    {group:"hal-hal kecil", text:"Karena caramu memesan makanan selalu ribet, tapi aku menikmatinya."},
+    {group:"hal-hal kecil", text:"Karena kamu suka hal-hal manis, sama seperti hatimu."},
+    {group:"hal-hal kecil", text:"Karena kamu selalu ingat detail kecil yang aku ceritakan sekilas."},
+    {group:"hal-hal kecil", text:"Karena tawamu yang paling jujur muncul saat kamu tidak menyadarinya."},
+    {group:"hal-hal kecil", text:"Karena caramu marah pun masih terasa lucu buatku (jangan marah soal ini)."},
+    {group:"tentang kita berdua", text:"Karena bersamamu, aku belajar apa artinya merasa nyaman jadi diri sendiri."},
+    {group:"tentang kita berdua", text:"Karena kita bisa berdebat soal hal kecil, lalu tertawa lagi lima menit kemudian."},
+    {group:"tentang kita berdua", text:"Karena rumah, buatku, bukan tempat — tapi caramu ada di sisiku."},
+    {group:"tentang kita berdua", text:"Karena setiap rencana masa depan terasa lebih nyata kalau ada kamu di dalamnya."},
+    {group:"untuk masa depan", text:"Karena aku ingin merayakan banyak ulang tahunmu lagi setelah ini."},
+    {group:"untuk masa depan", text:"Karena aku percaya versi terbaik dari kita ada di depan, bukan di belakang."},
+    {group:"selamanya", text:"Dan yang terakhir — karena kamu, Zakia, adalah pilihan yang akan selalu aku pilih lagi."}
+  ];
+
+  let reasonIndex = 0;
+
+  function initReasons(){
+    reasonIndex = 0;
+    renderDots();
+    renderReason();
+  }
+
+  function renderDots(){
+    const wrap = document.getElementById('progressDots');
+    wrap.innerHTML = '';
+    // show a condensed set of dots (group markers) instead of 27 tiny dots
+    const totalGroups = 7;
+    for(let i=0;i<totalGroups;i++){
+      const d = document.createElement('div');
+      d.className = 'dot' + (i <= Math.floor(reasonIndex/4) ? ' on' : '');
+      wrap.appendChild(d);
+    }
+  }
+
+  function renderReason(){
+    const r = reasons[reasonIndex];
+    document.getElementById('reasonGroupLabel').textContent = r.group;
+    document.getElementById('reasonNum').textContent = 'Alasan ' + String(reasonIndex+1).padStart(2,'0') + ' / 27';
+    document.getElementById('reasonText').textContent = r.text;
+    renderDots();
+    const btn = document.getElementById('reasonNextBtn');
+    btn.textContent = (reasonIndex === reasons.length-1) ? 'Lanjut ke Menu →' : 'Alasan Selanjutnya →';
+  }
+
+  function nextReason(){
+    if(reasonIndex < reasons.length-1){
+      reasonIndex++;
+      renderReason();
+    } else {
+      goTo('hub');
+    }
+  }
+
+  /* ---------- choice hub ---------- */
+  function visitChoice(el, target){
+    el.classList.add('visited');
+    goTo(target);
+  }
+
+  /* ---------- letter open ---------- */
+  function openLetter(){
+    document.getElementById('letterContent').style.display = 'block';
+    document.getElementById('envelopeHint').style.display = 'none';
+    document.getElementById('envelope').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
