@@ -96,6 +96,30 @@
     margin-top:14px;
   }
 
+  /* ---------- AUDIO PLAYER ---------- */
+  .audio-control{
+    position:fixed;
+    bottom:20px;right:20px;
+    background:var(--rose);
+    border:none;
+    width:50px;height:50px;
+    border-radius:50%;
+    color:var(--ivory);
+    font-size:20px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 4px 12px rgba(92,74,79,0.25);
+    transition:all .3s ease;
+    z-index:100;
+  }
+  .audio-control:hover{
+    background:var(--rose-deep);
+    transform:scale(1.1);
+  }
+  .audio-control:active{transform:scale(0.95);}
+
   /* ---------- COVER ---------- */
   #page-cover .deco-flower{
     font-size:30px;
@@ -406,6 +430,14 @@
 </head>
 <body>
 
+<!-- Audio element for background music -->
+<audio id="bgMusic" loop>
+  <source src="./Chintya Gabriella - Panjang Umur Official Music Video.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Audio control button -->
+<button class="audio-control" id="audioBtn" title="Putar/Jeda Musik">🎵</button>
+
 <div id="app">
 
   <!-- ================= 1. COVER ================= -->
@@ -638,6 +670,51 @@
 
 <script>
   const CORRECT = "26061999";
+
+  // ========== AUDIO CONTROL ==========
+  const bgMusic = document.getElementById('bgMusic');
+  const audioBtn = document.getElementById('audioBtn');
+  let isPlaying = false;
+
+  // Try to autoplay when page loads
+  window.addEventListener('load', () => {
+    // Try to play with muted first (browser requirement)
+    bgMusic.muted = true;
+    bgMusic.play().then(() => {
+      bgMusic.muted = false;
+      isPlaying = true;
+      updateAudioBtn();
+    }).catch(() => {
+      // If autoplay fails, wait for user interaction
+      document.addEventListener('click', playAudioOnFirstClick, { once: true });
+    });
+  });
+
+  function playAudioOnFirstClick() {
+    if (!isPlaying) {
+      bgMusic.play().then(() => {
+        isPlaying = true;
+        updateAudioBtn();
+      });
+    }
+  }
+
+  audioBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (isPlaying) {
+      bgMusic.pause();
+      isPlaying = false;
+    } else {
+      bgMusic.play();
+      isPlaying = true;
+    }
+    updateAudioBtn();
+  });
+
+  function updateAudioBtn() {
+    audioBtn.textContent = isPlaying ? '🎵' : '🔇';
+    audioBtn.style.opacity = isPlaying ? '1' : '0.6';
+  }
 
   function goTo(name){
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
