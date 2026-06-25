@@ -261,6 +261,11 @@
     overflow:hidden;
     border:1px solid var(--line);
   }
+  .photo-image{
+    width:100%;height:260px;
+    object-fit:cover;
+    display:block;
+  }
   .photo-placeholder{
     width:100%;height:260px;
     background:linear-gradient(135deg,var(--gold-soft),var(--rose));
@@ -532,20 +537,24 @@
     <h2 class="display">Perjalanan Kita</h2>
     <div class="gallery-scroll">
       <div class="photo-card">
-        <div class="photo-placeholder">[ganti dengan foto 1]<br>misal: pertama kali bertemu</div>
-        <div class="photo-caption">Awal dari segalanya.</div>
+        <img src="./foto-1.jpg" alt="Foto 1" class="photo-image">
+        <div class="photo-caption">Ultah pertama kamu bareng aku.</div>
       </div>
       <div class="photo-card">
-        <div class="photo-placeholder">[ganti dengan foto 2]<br>misal: jalan-jalan favorit</div>
-        <div class="photo-caption">Hari yang tidak pernah aku lupa.</div>
+        <img src="./foto-2.jpg" alt="Foto 2" class="photo-image">
+        <div class="photo-caption">Kita mulai bareng-bareng terus, seneng kalo diceritain semua mah.</div>
       </div>
       <div class="photo-card">
-        <div class="photo-placeholder">[ganti dengan foto 3]<br>misal: momen lucu kalian</div>
-        <div class="photo-caption">Kamu paling cantik saat tertawa lepas seperti ini.</div>
+        <img src="./foto-3.jpg" alt="Foto 3" class="photo-image">
+        <div class="photo-caption">Kamu yang suka banget menang, pantes dapet aku sebagai hadiahnya.</div>
       </div>
       <div class="photo-card">
-        <div class="photo-placeholder">[ganti dengan foto 4]<br>misal: foto terbaru kalian</div>
-        <div class="photo-caption">Dan sampai detik ini, masih sama jatuh cintanya.</div>
+        <img src="./foto-4.jpg" alt="Foto 4" class="photo-image">
+        <div class="photo-caption">Tuh liatkan... abis ultah kedua kamu sama aku kamu tambah cantik aja.</div>
+      </div>
+      <div class="photo-card">
+        <img src="./foto-5.webp" alt="Foto 5" class="photo-image">
+        <div class="photo-caption">Akhirnya terikat jugaaaa dan sebentar lagi kita beneran sah tauuuu.</div>
       </div>
     </div>
     <p class="hint">→ geser untuk lihat lainnya</p>
