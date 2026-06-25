@@ -308,6 +308,17 @@
   }
 
   /* ---------- VIDEO ---------- */
+  .video-caption-display{
+    font-size:13.5px;
+    color:var(--mauve);
+    opacity:.75;
+    font-style:italic;
+    margin-top:10px;
+    text-align:center;
+    min-height:22px;
+    font-family:'Cormorant Garamond',serif;
+    letter-spacing:0.02em;
+  }
   .video-frame{
     width:100%;
     aspect-ratio:9/16;
@@ -607,6 +618,7 @@
     </div>
     
     <div class="video-selector" id="videoSelector"></div>
+    <div class="video-caption-display" id="videoCaption"></div>
     <div class="video-counter" id="videoCounter"></div>
     
     <button class="btn btn-fill" onclick="goTo('hub')" style="margin-top:24px;">Kembali ke Menu</button>
@@ -845,9 +857,8 @@
 
   /* ---------- video carousel ---------- */
   const videos = [
-    {title: 'Video 1', src: 'assets/video-ucapan.mp4'},
-    {title: 'Video 2', src: 'assets/video-ucapan-2.mp4'},
-    {title: 'Video 3', src: 'assets/video-ucapan-3.mp4'}
+    {title: 'Dari Maha', src: 'video-maha.mp4', caption: 'dari sahabat yang paling sayang kamu'},
+    {title: 'Dari Ibu', src: 'video-ibu.mp4', caption: 'dari ibu yang selalu ada buat kamu'}
   ];
   
   let currentVideoIndex = 0;
@@ -885,6 +896,9 @@
   function updateVideoCounter(){
     const counter = document.getElementById('videoCounter');
     counter.textContent = `Video ${currentVideoIndex + 1} dari ${videos.length}`;
+    const captionEl = document.getElementById('videoCaption');
+    const cap = videos[currentVideoIndex].caption;
+    captionEl.textContent = cap ? `— ${cap} —` : '';
   }
 
   /* ---------- letter open ---------- */
